@@ -14,16 +14,16 @@ import models.Employee;
 import utils.DBUtil;
 
 /**
- * Servlet implementation class EmployeesShowServlet
+ * Servlet implementation class EmployeesEditServlet
  */
-@WebServlet("/employees/show")
-public class EmployeesShowServlet extends HttpServlet {
+@WebServlet("/employees/edit")
+public class EmployeesEditServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EmployeesShowServlet() {
+    public EmployeesEditServlet() {
         super();
     }
 
@@ -31,16 +31,18 @@ public class EmployeesShowServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         EntityManager em = DBUtil.createEntityManager();
+        EntityManager em = DBUtil.createEntityManager();
 
-            Employee e = em.find(Employee.class, Integer.parseInt(request.getParameter("id")));
+        Employee e = em.find(Employee.class, Integer.parseInt(request.getParameter("id")));
 
-            em.close();
+        em.close();
 
-            request.setAttribute("employee", e);
+        request.setAttribute("employee", e);
+        request.setAttribute("_token", request.getSession().getId());
+        request.getSession().setAttribute("employee_id", e.getId());
 
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/show.jsp");
-            rd.forward(request, response);
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/edit.jsp");
+        rd.forward(request, response);
     }
 
 }
