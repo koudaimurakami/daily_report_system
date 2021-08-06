@@ -14,12 +14,20 @@ import javax.persistence.Table;
 @Table(name = "follow")
 @NamedQueries({
     @NamedQuery(
-            name = "getAllFollow",
-            query = "SELECT f FROM Follow AS f ORDER BY f.id DESC"
+            name = "getMyFollowed",
+            query = "SELECT f FROM Follow AS f WHERE f.follower_id = :follower ORDER BY f.id DESC"
     ),
     @NamedQuery(
-            name = "getFollowCount",
-            query = "SELECT COUNT(f) FROM Follow AS f"
+            name = "getMyFollowedCount",
+            query = "SELECT COUNT(f) FROM Follow AS f WHERE f.follower_id = :follower"
+            ),
+    @NamedQuery(
+            name = "getMyFollower",
+            query = "SELECT f FROM Follow AS f WHERE f.followed_id = :followed ORDER BY f.id DESC"
+            ),
+    @NamedQuery(
+            name = "getMyFollowerCount",
+            query = "SELECT COUNT(f) FROM Follow AS f WHERE f.followed_id = :followed"
             ),
 })
 @Entity
@@ -30,12 +38,12 @@ public class Follow {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
-    private Employee employee;
+    @JoinColumn(name = "follower_id", nullable = false)
+    private Employee follower_id;
 
     @ManyToOne
-    @JoinColumn(name = "employee_being_followed_id", nullable = false)
-    private Employee follow;
+    @JoinColumn(name = "followed_id", nullable = false)
+    private Employee followed_id;
 
     public Integer getId() {
         return id;
@@ -45,21 +53,29 @@ public class Follow {
         this.id = id;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public Employee getFollower_id() {
+        return follower_id;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setFollower_id(Employee follower_id) {
+        this.follower_id = follower_id;
     }
 
-    public Employee getFollow() {
-        return follow;
+    public Employee getFollowed_id() {
+        return followed_id;
     }
 
-    public void setFollow(Employee follow) {
-        this.follow = follow;
+    public void setFollowed_id(Employee followed_id) {
+        this.followed_id = followed_id;
     }
+
+
+
+
+
+
+
+
 
 
 }

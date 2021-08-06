@@ -39,6 +39,9 @@ public class EmployeesShowServlet extends HttpServlet {
 
             request.setAttribute("employee", e);
 
+            // フォローされる側のIDをセッションスコープに登録
+            request.getSession().setAttribute("followed_id", e.getId());
+
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/show.jsp");
             rd.forward(request, response);
     }

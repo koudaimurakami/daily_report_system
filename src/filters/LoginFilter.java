@@ -55,10 +55,18 @@ public class LoginFilter implements Filter {
                         return;
                     }
 
-                    // 従業員管理の機能は管理者のみが閲覧できるようにする
-                    if(servlet_path.matches("/employees.*") && e.getAdmin_flag() == 0) {
+                    // 従業員の新規登録、従業員の削除、従業員情報の編集、の機能は管理者のみが操作できるようにする
+                    if(servlet_path.matches("/employees.create") && e.getAdmin_flag() == 0) {
                         ((HttpServletResponse)response).sendRedirect(context_path + "/");
                         return;
+                    } else if(servlet_path.matches("/employees.destroy") && e.getAdmin_flag() == 0) {
+                        ((HttpServletResponse)response).sendRedirect(context_path + "/");
+                    } else if(servlet_path.matches("/employees.edit") && e.getAdmin_flag() == 0) {
+                        ((HttpServletResponse)response).sendRedirect(context_path + "/");
+                    } else if(servlet_path.matches("/employees.new") && e.getAdmin_flag() == 0) {
+                        ((HttpServletResponse)response).sendRedirect(context_path + "/");
+                    } else if(servlet_path.matches("/employees.update") && e.getAdmin_flag() == 0) {
+                        ((HttpServletResponse)response).sendRedirect(context_path + "/");
                     }
                 } else {                                    // ログイン画面について
                     // ログインしているのにログイン画面を表示させようとした場合は

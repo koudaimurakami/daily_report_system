@@ -40,6 +40,7 @@ public class ReportsShowServlet extends HttpServlet {
         request.setAttribute("report", r);
         request.setAttribute("_token", request.getSession().getId());
 
+
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/show.jsp");
         rd.forward(request, response);
     }

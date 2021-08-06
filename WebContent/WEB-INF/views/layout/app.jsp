@@ -14,10 +14,12 @@
                 <div id="header_menu">
                     <h1><a href="<c:url value='/' />">日報管理システム</a></h1>&nbsp;&nbsp;&nbsp;
                     <c:if test="${sessionScope.login_employee != null}">
-                        <c:if test="${sessionScope.login_employee.admin_flag == 1}">
+                       <%--<c:if test="${sessionScope.login_employee.admin_flag == 1}">全ての従業員が従業員の詳細ページを見れるようにこの行をコメントアウトにしておく --%>
                             <a href="<c:url value='/employees/index' />">従業員管理</a>&nbsp;
-                        </c:if>
+                        <%--</c:if> 2行上と共にコメントアウト--%>
                         <a href="<c:url value='/reports/index' />">日報管理</a>&nbsp;
+                        <a href="<c:url value='/follow/index' />">フォロー</a>&nbsp;
+                        <a href="<c:url value='/follower/index' />">フォロワー</a>&nbsp;
                     </c:if>
                 </div>
                 <c:if test="${sessionScope.login_employee != null}">
