@@ -53,6 +53,7 @@ public class FollowerIndexServlet extends HttpServlet {
         em.close();
 
 
+
         request.setAttribute("login_follower", login_follower);
         request.setAttribute("loginf_follower_count", login_follower_count);
         request.setAttribute("page", page);

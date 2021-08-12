@@ -51,7 +51,18 @@
             </c:otherwise>
         </c:choose>
 
-        <p><a href="<c:url value='/follow' />">この従業員をフォローする</a></p>
+
+        <%--EmployeesShowServletで、リクエストスコープに登録したshow_followed_countを使用 --%>
+        <c:choose>
+            <c:when test="${show_followed_count == 1}">
+                <p><a href="<c:url value='/unfollow' />">この従業員のフォローをやめる</a></p>
+            </c:when>
+            <c:otherwise>
+                <p><a href="<c:url value='/follow' />">この従業員をフォローする</a></p>
+            </c:otherwise>
+         </c:choose>
+
+
         <p><a href="<c:url value='/employees/index' />">一覧に戻る</a></p>
     </c:param>
 </c:import>

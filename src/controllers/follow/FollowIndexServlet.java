@@ -43,6 +43,7 @@ public class FollowIndexServlet extends HttpServlet {
         } catch(Exception e) {
             page = 1;
         }
+        // ログイン中の従業員にフォローされている人のリスト
         List<Follow> login_followed = em.createNamedQuery("getMyFollowed", Follow.class)
                                         .setParameter("follower", login_employee)  // Queryの :followerに対応
                                         .setFirstResult(15 * (page -1))
@@ -54,6 +55,7 @@ public class FollowIndexServlet extends HttpServlet {
                                                 .getSingleResult();
 
         em.close();
+
 
         request.setAttribute("login_followed", login_followed);
         request.setAttribute("login_followed_count", login_followed_count);

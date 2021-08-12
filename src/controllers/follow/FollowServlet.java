@@ -44,9 +44,14 @@ public class FollowServlet extends HttpServlet {
         Employee er_id = em.find(Employee.class, login_employee.getId());
         f.setFollower_id(er_id);
 
+
+        // followed_id は、リダイレクト時にも使用する
+        // リダイレクト時のパラメータを数値にしたいので、セッションから取り出すときは int にキャストしておく必要がある
+        // そもそも、Employee型にすると、java.lang.Integer cannot be cast to models.Employee というエラーが出る
         int followed_employee = (int)request.getSession().getAttribute("followed_id");
         Employee ed_id = em.find(Employee.class, (int)followed_employee);
         f.setFollowed_id(ed_id);
+
 
 
         // データベースに保存
