@@ -53,6 +53,26 @@ public class TopPageIndexServlet extends HttpServlet {
                                         .setParameter("employee", login_employee)
                                         .getSingleResult();
 
+       // List<Follow> my_followed = em.createNamedQuery("forToppage_followed", Follow.class)
+         //                               .setParameter("log_emp",login_employee)
+           //                             .getResultList();
+
+        //for (int i = 0; i < my_followed.size(); i++) {
+          //  System.out.println(my_followed.get(i) + "あいうえお");
+        //}
+
+
+        //List<Report> followed_reports = em.createNamedQuery("getMyAllFollowedReports", Report.class)
+          //                                      .setParemeter("follow_relationship", )
+            //                                    .setFirstResult(15 * (page -1))
+              //                                  .setMaxResult(15)
+                //                                .getResultList();
+
+        //long followed_reports_count = em.createNamedQuery("getMyAllFollowedReportsCount", Report.class)
+          //                                  .setParameter("follow_relationship", )
+            //                                .getSingleResult();
+
+
         em.close();
 
         request.setAttribute("reports", reports);

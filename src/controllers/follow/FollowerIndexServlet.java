@@ -40,7 +40,9 @@ public class FollowerIndexServlet extends HttpServlet {
         int page = 1;
         try{
             page = Integer.parseInt(request.getParameter("page"));
-        } catch(NumberFormatException e) { }
+        } catch(NumberFormatException e) {
+            page = 1;
+        }
         List<Follow> login_follower = em.createNamedQuery("getMyFollower", Follow.class)
                                             .setParameter("followed", login_employee)  //Queryの :followedに対応
                                             .setFirstResult(15 * (page - 1))
@@ -55,7 +57,7 @@ public class FollowerIndexServlet extends HttpServlet {
 
 
         request.setAttribute("login_follower", login_follower);
-        request.setAttribute("loginf_follower_count", login_follower_count);
+        request.setAttribute("login_follower_count", login_follower_count);
         request.setAttribute("page", page);
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/follow/follower_index.jsp");
