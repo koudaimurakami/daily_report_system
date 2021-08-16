@@ -33,14 +33,16 @@ import javax.persistence.Table;
             name = "getMyReportsCount",
             query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee"
             ),
-    //@NamedQuery(
-            //name = "getMyAllFollowedReports",
-            //query = "SELECT r FROM Report AS r WHERE r.employee = :follow_relationship"
-            //),
-    //@NamedQuery(
-      //      name = "getMyAllFollowedReportsCount",
-        //    query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :follow_relationship"
-          //  ),
+    @NamedQuery(
+            name = "getMyAllFollowedReports",
+            query = "SELECT r FROM Report AS r WHERE r.employee = :follow_relationship"
+            ),
+    @NamedQuery(
+            name = "getMyAllFollowedReportsCount",
+            // フォローされている人は複数人いるので、= ではなく、in句を使う必要がある
+            // = では、該当する1人しかセレクトできない
+            query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee IN(:follow_relationship)"
+            ),
 })
 @Entity
 public class Report {

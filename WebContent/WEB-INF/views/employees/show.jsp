@@ -52,15 +52,19 @@
         </c:choose>
 
 
-        <%--EmployeesShowServletで、リクエストスコープに登録したshow_followed_countを使用 --%>
-        <c:choose>
-            <c:when test="${show_followed_count == 1}">
-                <p><a href="<c:url value='/unfollow' />">この従業員のフォローをやめる</a></p>
-            </c:when>
-            <c:otherwise>
-                <p><a href="<c:url value='/follow' />">この従業員をフォローする</a></p>
-            </c:otherwise>
-         </c:choose>
+        <%--ログインしている自分自身のことはフォローできないように制御する --%>
+        <c:if test="${employee.id != sessionScope.login_employee.id}">
+            <%--EmployeesShowServletで、リクエストスコープに登録したshow_followed_countを使用 --%>
+            <c:choose>
+                <c:when test="${show_followed_count == 1}">
+                    <p><a href="<c:url value='/unfollow' />">この従業員のフォローをやめる</a></p>
+                </c:when>
+                <c:otherwise>
+                    <p><a href="<c:url value='/follow' />">この従業員をフォローする</a></p>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
+
 
 
         <p><a href="<c:url value='/employees/index' />">一覧に戻る</a></p>

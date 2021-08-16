@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
+import models.Follow;
 import models.Report;
 import utils.DBUtil;
 
@@ -53,24 +54,41 @@ public class TopPageIndexServlet extends HttpServlet {
                                         .setParameter("employee", login_employee)
                                         .getSingleResult();
 
-       // List<Follow> my_followed = em.createNamedQuery("forToppage_followed", Follow.class)
-         //                               .setParameter("log_emp",login_employee)
-           //                             .getResultList();
+        List<Follow> my_followed = em.createNamedQuery("forToppage_followed", Follow.class)
+                                        .setParameter("log_emp",login_employee)
+                                        .getResultList();
 
-        //for (int i = 0; i < my_followed.size(); i++) {
-          //  System.out.println(my_followed.get(i) + "あいうえお");
-        //}
+        for (int i = 0; i < my_followed.size(); i++) {
+            Follow follow_relationship = my_followed.get(i);
+
+            Employee all_followed = follow_relationship.getFollowed_id();
 
 
-        //List<Report> followed_reports = em.createNamedQuery("getMyAllFollowedReports", Report.class)
-          //                                      .setParemeter("follow_relationship", )
-            //                                    .setFirstResult(15 * (page -1))
-              //                                  .setMaxResult(15)
-                //                                .getResultList();
 
-        //long followed_reports_count = em.createNamedQuery("getMyAllFollowedReportsCount", Report.class)
-          //                                  .setParameter("follow_relationship", )
-            //                                .getSingleResult();
+
+        List<Report> followed_reports = em.createNamedQuery("getMyAllFollowedReports", Report.class)
+                                                .setParameter("follow_relationship", all_followed)
+                                                .setFirstResult(15 * (page -1))
+                                                .setMaxResults(15)
+                                                .getResultList();
+
+        long followed_reports_count = em.createNamedQuery("getMyAllFollowedReportsCount", Long.class)
+                                            .setParameter("follow_relationship", all_followed)
+                                            .getSingleResult();
+
+
+        request.setAttribute("followed_reports", followed_reports);
+        request.setAttribute("followed_reports_count", followed_reports_count);
+
+        System.out.println(followed_reports + "おはよう");
+        System.out.println(followed_reports_count + "ありがとう");
+        System.out.println(all_followed + "こんばんわ");
+        System.out.println(follow_relationship + "こんにちわ");
+        System.out.println(my_followed + "おやすみ");
+
+        // この for() {} の中の変数は、この中でないと使用できないから、
+        // リストの作成も、setAttribute も、この {} の中で行う
+        }
 
 
         em.close();

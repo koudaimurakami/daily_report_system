@@ -20,6 +20,7 @@
                         <a href="<c:url value='/reports/index' />">日報管理</a>&nbsp;
                         <a href="<c:url value='/follow/index' />">フォロー</a>&nbsp;
                         <a href="<c:url value='/follower/index' />">フォロワー</a>&nbsp;
+                        <a href="<c:url value='/mypage/index' />">マイページ</a>&nbsp;
                     </c:if>
                 </div>
                 <c:if test="${sessionScope.login_employee != null}">

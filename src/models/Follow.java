@@ -37,10 +37,10 @@ import javax.persistence.Table;
             name = "forUnFollow",
             query = "SELECT f FROM Follow AS f WHERE f.follower_id = :login_emp AND f.followed_id = :destroy_ed"
             ),
-    //@NamedQuery(
-      //      name = "forToppage_follwed",
-        //    query = "SELECT f.followed_id FROM Follow AS f WHERE f.follower_id = :log_emp"
-          //  ),
+    @NamedQuery(
+            name = "forToppage_followed",
+            query = "SELECT f FROM Follow AS f WHERE f.follower_id = :log_emp"
+            ),
 })
 @Entity
 public class Follow {
