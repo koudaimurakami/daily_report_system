@@ -62,7 +62,7 @@ public class MyPageIndexServlet extends HttpServlet {
 
 
 
-            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/myPage/index.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/myPage/index.jsp");
             rd.forward(request, response);
     }
 
