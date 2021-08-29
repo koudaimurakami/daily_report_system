@@ -25,6 +25,8 @@ import javax.persistence.Table;
             name = "getReportsCount",
             query = "SELECT COUNT(r) FROM Report AS r"
             ),
+
+    // マイページに、ログインしている自分の日報一覧を表示させるためのクエリ
     @NamedQuery(
             name = "getMyAllReports",
             query = "SELECT r FROM Report AS r WHERE r.employee = :employee ORDER BY r.id DESC"
@@ -33,16 +35,19 @@ import javax.persistence.Table;
             name = "getMyReportsCount",
             query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee"
             ),
+
+     // トップページに、フォローしている人の日報一覧を表示させるためのクエリ
+     // フォローされている人は複数人いるので、= ではなく、in句を使う必要がある
+     // = では、該当する1人しかセレクトできない
     @NamedQuery(
             name = "getMyAllFollowedReports",
-            query = "SELECT r FROM Report AS r WHERE r.employee = :follow_relationship"
+            query = "SELECT r FROM Report AS r WHERE r.employee IN(:followed_reports)"
             ),
     @NamedQuery(
             name = "getMyAllFollowedReportsCount",
-            // フォローされている人は複数人いるので、= ではなく、in句を使う必要がある
-            // = では、該当する1人しかセレクトできない
-            query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee IN(:follow_relationship)"
+            query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee IN(:followed_reports)"
             ),
+
 })
 @Entity
 public class Report {

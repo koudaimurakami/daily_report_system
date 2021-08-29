@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
-import models.Follow;
 import models.Report;
 import utils.DBUtil;
 
@@ -44,57 +43,43 @@ public class TopPageIndexServlet extends HttpServlet {
         } catch(Exception e) {
             page = 1;
         }
-        List<Report> reports = em.createNamedQuery("getMyAllReports", Report.class)
-                                    .setParameter("employee", login_employee)
-                                    .setFirstResult(15 * (page -1))
-                                    .setMaxResults(15)
-                                    .getResultList();
 
-        long reports_count = (long)em.createNamedQuery("getMyReportsCount", Long.class)
-                                        .setParameter("employee", login_employee)
-                                        .getSingleResult();
 
-        List<Follow> my_followed = em.createNamedQuery("forToppage_followed", Follow.class)
-                                        .setParameter("log_emp",login_employee)
+        //  ↓トップページには、フォローしている人の日報一覧のみ表示させる ↓ （自分の日報は、マイページに表示させる）
+
+        // ① 【FollowクラスのList<Employee>を作る】------------------------------------------------------------------------------
+        	//  query = "SELECT f.followed_id FROM Follow AS f WHERE f.follower_id = :login_emp"  ←（Followクラスに書いたクエリ）
+        	// <Employee>型にするのは、select f.followed_id の followed_id というフィールド変数が Employee型だから。
+        	// つまり、Employee型だけが集まる Listを作成する必要があるから、<Employee>型にしなければならない。
+        	// さらに、③のパラメータとして使用できるのは Employee型なので、Employee型のデータのかたまりを作る必要がある。
+        	// Reportクラスに書いたクエリは、where r.employee の employeeが Employee型なので、パラメータには Employee型しか使用できない。
+
+        List<Employee> my_followed = em.createNamedQuery("forToppage_followed", Employee.class)
+                                        .setParameter("login_emp",login_employee)
                                         .getResultList();
 
-        for (int i = 0; i < my_followed.size(); i++) {
-            Follow follow_relationship = my_followed.get(i);
 
-            Employee all_followed = follow_relationship.getFollowed_id();
+        // ② 【ReportクラスのList<Report>を作る】----------------------------------------------------------------------------------
+    		// query = "SELECT r FROM Report AS r WHERE r.employee IN(:followed_reports)" ← (Reportクラスに書いたクエリ)
+        	//  query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee IN(:followed_reports)"  ←（Reportクラスに書いたクエリ）
+        	// どちらのクエリも、where句の employeeというフィールド変数は Employee型なので、パラメータには Employee型のデータを入れる。
 
+        List<Report> ed_reports = em.createNamedQuery("getMyAllFollowedReports", Report.class)
+                                        .setParameter("followed_reports", my_followed)
+                                        .setFirstResult(15 * (page -1))
+                                        .setMaxResults(15)
+                                        .getResultList();
 
-
-
-        List<Report> followed_reports = em.createNamedQuery("getMyAllFollowedReports", Report.class)
-                                                .setParameter("follow_relationship", all_followed)
-                                                .setFirstResult(15 * (page -1))
-                                                .setMaxResults(15)
-                                                .getResultList();
-
-        long followed_reports_count = em.createNamedQuery("getMyAllFollowedReportsCount", Long.class)
-                                            .setParameter("follow_relationship", all_followed)
-                                            .getSingleResult();
-
-
-        request.setAttribute("followed_reports", followed_reports);
-        request.setAttribute("followed_reports_count", followed_reports_count);
-
-        System.out.println(followed_reports + "おはよう");
-        System.out.println(followed_reports_count + "ありがとう");
-        System.out.println(all_followed + "こんばんわ");
-        System.out.println(follow_relationship + "こんにちわ");
-        System.out.println(my_followed + "おやすみ");
-
-        // この for() {} の中の変数は、この中でないと使用できないから、
-        // リストの作成も、setAttribute も、この {} の中で行う
-        }
+        long ed_reports_count = em.createNamedQuery("getMyAllFollowedReportsCount", Long.class)
+                                        .setParameter("followed_reports", my_followed)
+                                        .getSingleResult();
 
 
         em.close();
 
-        request.setAttribute("reports", reports);
-        request.setAttribute("reports_count", reports_count);
+        // ③で作成した2つの変数を、JSPに送るパラメータとして使用
+        request.setAttribute("followed_reports", ed_reports);
+        request.setAttribute("followed_reports_count", ed_reports_count);
         request.setAttribute("page", page);
 
 
