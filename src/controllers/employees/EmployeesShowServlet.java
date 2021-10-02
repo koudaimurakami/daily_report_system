@@ -63,7 +63,7 @@ public class EmployeesShowServlet extends HttpServlet {
 
             // show_followed_countで指定している条件に何件情報が含まれているか、目印となるワードと共にコンソールに出力してみる
             // NamedQueryのSELECT COUNT(Followクラスで記述)では、情報が何件あるのかを取得することができる
-            //System.out.println(show_followed_count + "かきくけこ");
+            //System.out.println(show_followed_count + "フォローを外す人が1件取れているかの確認");
 
 
 

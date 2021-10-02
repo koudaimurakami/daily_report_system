@@ -43,6 +43,7 @@ public class FollowIndexServlet extends HttpServlet {
         } catch(Exception e) {
             page = 1;
         }
+
         // ログイン中の従業員にフォローされている人のリスト
         List<Follow> login_followed = em.createNamedQuery("getMyFollowed", Follow.class)
                                         .setParameter("follower", login_employee)  // Queryの :followerに対応
@@ -61,7 +62,6 @@ public class FollowIndexServlet extends HttpServlet {
         request.setAttribute("login_followed_count", login_followed_count);
         request.setAttribute("page", page);
 
-        // 最後のid=以降は必要なのかどうか id=意向を消して実行した結果無くてもうまく画面が表示された
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/follow/index.jsp");
         rd.forward(request, response);
     }

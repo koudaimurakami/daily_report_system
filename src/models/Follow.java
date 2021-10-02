@@ -13,7 +13,8 @@ import javax.persistence.Table;
 
 @Table(name = "follow")
 @NamedQueries({
-    @NamedQuery(
+    // ログイン中の従業員がフォローしている人を集める
+	@NamedQuery(
             name = "getMyFollowed",
             query = "SELECT f FROM Follow AS f WHERE f.follower_id = :follower ORDER BY f.id DESC"
     ),
@@ -21,6 +22,7 @@ import javax.persistence.Table;
             name = "getMyFollowedCount",
             query = "SELECT COUNT(f) FROM Follow AS f WHERE f.follower_id = :follower"
             ),
+    // ログイン中の従業員をフォローしている人を集める
     @NamedQuery(
             name = "getMyFollower",
             query = "SELECT f FROM Follow AS f WHERE f.followed_id = :followed ORDER BY f.id DESC"
@@ -29,16 +31,18 @@ import javax.persistence.Table;
             name = "getMyFollowerCount",
             query = "SELECT COUNT(f) FROM Follow AS f WHERE f.followed_id = :followed"
             ),
+    // フォローを外す人が1件だけきちんと取得できているかの確認をするため、EmployeesShowServetに記述
     @NamedQuery(
             name = "forUnFollow_count",
             query = "SELECT COUNT(f) FROM Follow AS f WHERE f.follower_id = :login_employee AND f.followed_id = :destroy_followed"
             ),
+    // フォローを外す人を集める
     @NamedQuery(
             name = "forUnFollow",
             query = "SELECT f FROM Follow AS f WHERE f.follower_id = :login_emp AND f.followed_id = :destroy_ed"
             ),
 
-    // トップページでフォローしている人の日報を一覧表示するから、まずはそのフォローしている人を集めるためのクエリ
+    // トップページ用に、ログイン中の従業員がフォローしている人を集めるためのクエリを書く
     @NamedQuery(
             name = "forToppage_followed",
             query = "SELECT f.followed_id FROM Follow AS f WHERE f.follower_id = :login_emp"

@@ -43,6 +43,7 @@ public class UnFollowServlet extends HttpServlet {
         int followed_employee = (int)request.getSession().getAttribute("followed_id");
         Employee destroy_ed_id = em.find(Employee.class, followed_employee);
 
+        // フォローを外す人のリストを作成
         List<Follow> destroy_data = em.createNamedQuery("forUnFollow", Follow.class)
                                         .setParameter("login_emp", login_emp_id)
                                         .setParameter("destroy_ed", destroy_ed_id)
@@ -57,9 +58,6 @@ public class UnFollowServlet extends HttpServlet {
         em.getTransaction().commit();
         em.close();
 
-        // セッションスコープ上の不要になったデータを削除
-        //request.getSession().removeAttribute("login_employee");
-        //request.getSession().removeAttribute("followed_id");
 
         // フォローされている側のidのパラメータとなる変数を作成
         int destroy_ed_employee = (int)request.getSession().getAttribute("followed_id");

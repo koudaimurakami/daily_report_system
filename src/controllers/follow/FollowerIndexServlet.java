@@ -43,6 +43,8 @@ public class FollowerIndexServlet extends HttpServlet {
         } catch(NumberFormatException e) {
             page = 1;
         }
+
+        // ログイン中の従業員をフォローしている人のリストを作成
         List<Follow> login_follower = em.createNamedQuery("getMyFollower", Follow.class)
                                             .setParameter("followed", login_employee)  //Queryの :followedに対応
                                             .setFirstResult(15 * (page - 1))
